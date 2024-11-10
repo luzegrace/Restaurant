@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Flier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 id="restaurantName">Loading...</h1>
+        <p id="tagline">Loading...</p>
+    </header>
+    <section>
+        <h2>About Us</h2>
+        <p id="about">Loading...</p>
+    </section>
+    <section>
+        <h2>Our Menu</h2>
+        <div id="menu">Loading...</div>
+    </section>
+    <section>
+        <h2>Location & Contact</h2>
+        <p id="location">Loading...</p>
+        <p id="contact">Loading...</p>
+    </section>
+
+    <script>
+        // Load content from content.json
+        fetch('content.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('restaurantName').innerText = data.restaurantName;
+                document.getElementById('tagline').innerText = data.tagline;
+                document.getElementById('about').innerText = data.about;
+                document.getElementById('location').innerText = data.location;
+                document.getElementById('contact').innerText = `Phone: ${data.contact.phone}, Hours: ${data.contact.hours}`;
+
+                // Display Menu Items
+                const menuContainer = document.getElementById('menu');
+                menuContainer.innerHTML = '';  // Clear "Loading..." text
+                data.menu.forEach(item => {
+                    const menuItem = document.createElement('div');
+                    menuItem.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <img src="${item.image}" alt="${item.name}" width="200">
+                    `;
+                    menuContainer.appendChild(menuItem);
+                });
+            })
+            .catch(error => console.error('Error loading content:', error));
+    </script>
+</body>
+</html>
